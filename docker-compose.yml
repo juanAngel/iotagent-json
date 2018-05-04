@@ -1,0 +1,29 @@
+version: '3'
+services:
+        iotaget-json:
+                build:
+                  context: .
+                environment:
+                  - IOTA_MQTT_HOST=mosquito
+                  - IOTA_HTTP_HOST=orion
+                  - IOTA_MONGO_HOST=mongo
+                  - IOTA_PROVIDER_URL="http://iotaget-json:4041"
+                  - IOTA_CONTEXT_BROKER_HOST=orion
+                ports:
+                - 4041:4041
+                networks: 
+                - iotaget
+                - fiware
+        mosquito:
+                image: ansi/mosquitto
+                ports:
+                - 1883:1883
+                networks: 
+                - iotaget
+        
+networks: 
+  iotaget:
+    driver: bridge
+  fiware:
+    external:
+        name: fiware_fiware
